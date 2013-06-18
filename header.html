@@ -13,9 +13,19 @@
 <!-- Begin Scripts -->
 <script src="http://code.jquery.com/jquery-1.10.1.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-	//Function to be used to put 'dots' back in their designated place on the page
+	/*Move 'dots' back to home base
+	Not implemented because jQuery .animation() calls the complete function before it actually runs the animation :( */
 	function moveIn() {
-		alert("It worked!");
+		var home_cor = {
+			"top": 1,
+			"left": 1
+		}
+		var options = {
+			duraction: "fast",
+			queue: false
+		}
+
+		$(self).animate(home_cor, options);
 	}
 
 	//Animation / Move Function
