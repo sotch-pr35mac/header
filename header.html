@@ -13,6 +13,18 @@
 <!-- Begin Scripts -->
 <script src="http://code.jquery.com/jquery-1.10.1.min.js" type="text/javascript"></script>
 <script type="text/javascript">
+	/*
+	* hoverFlow - A Solution to Animation Queue Buildup in jQuery
+	* Version 1.00
+	*
+	* Copyright (c) 2009 Ralf Stoltze, http://www.2meter3.de/code/hoverFlow/
+	* Dual-licensed under the MIT and GPL licenses.
+	* http://www.opensource.org/licenses/mit-license.php
+	* http://www.gnu.org/licenses/gpl.html
+	*/
+	(function($){$.fn.hoverFlow=function(c,d,e,f,g){if($.inArray(c,['mouseover','mouseenter','mouseout','mouseleave'])==-1){return this}var h=typeof e==='object'?e:{complete:g||!g&&f||$.isFunction(e)&&e,duration:e,easing:g&&f||f&&!$.isFunction(f)&&f};h.queue=false;var i=h.complete;h.complete=function(){$(this).dequeue();if($.isFunction(i)){i.call(this)}};return this.each(function(){var b=$(this);if(c=='mouseover'||c=='mouseenter'){b.data('jQuery.hoverFlow',true)}else{b.removeData('jQuery.hoverFlow')}b.queue(function(){var a=(c=='mouseover'||c=='mouseenter')?b.data('jQuery.hoverFlow')!==undefined:b.data('jQuery.hoverFlow')===undefined;if(a){b.animate(d,h)}else{b.queue([])}})})}})(jQuery);
+</script>
+<script type="text/javascript">
 $(document).ready(function() {
 	/*Move 'dots' back to home base
 	Not implemented because jQuery .animation() calls the complete function before it actually runs the animation :( */
@@ -30,7 +42,7 @@ $(document).ready(function() {
 	}
 
 	//Animation / Move Function
-	function moveOut(self) {
+	function moveOut(self, e) {
 		//960 x 48
 		var window_width = 960;
 		var window_height = 48;
@@ -46,18 +58,19 @@ $(document).ready(function() {
 			queue: false
 		}
 
-		$(self).animate(new_cor, options);
+		$(self).hoverFlow(e.type, new_cor, options);
 	}
 
 	//Trigger Animation
-	$(".circle").hover(function() {
-		moveOut(this);
+	$(".circle").hover(function(e) {
+		moveOut(this, e);
 	});
-	$(".circle").mouseover(function() {
-		moveOut(this);
+	/*Commented out so the event is not triggered multiple times for one stroke of the mouse
+	$(".circle").mouseover(function(e) {
+		moveOut(this, e);
 	});
-	$(".circle").mousemove(function(){
-		moveOut(this);
-	});
+	$(".circle").mousemove(function(e){
+		moveOut(this, e);
+	});*/
 });
 </script>
