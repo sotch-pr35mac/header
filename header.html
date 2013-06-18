@@ -26,9 +26,8 @@
 </script>
 <script type="text/javascript">
 $(document).ready(function() {
-	/*Move 'dots' back to home base
-	Not implemented because jQuery .animation() calls the complete function before it actually runs the animation :( */
-	function moveIn() {
+	//Move 'dots' back to home base
+	function moveIn(self) {
 		var home_cor = {
 			"top": 1,
 			"left": 1
@@ -58,7 +57,9 @@ $(document).ready(function() {
 			queue: false
 		}
 
-		$(self).hoverFlow(e.type, new_cor, options);
+		$(self).hoverFlow(e.type, new_cor, options).promise().done(function() {
+			moveIn(self);
+		});
 	}
 
 	//Trigger Animation
